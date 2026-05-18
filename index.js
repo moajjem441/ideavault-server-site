@@ -1,0 +1,66 @@
+const express = require('express')
+const cors = require('cors');
+const dotenv = require("dotenv")
+const { MongoClient, ServerApiVersion } = require('mongodb');
+dotenv.config()
+const uri =process.env.MONGO_URL;
+
+const app = express()
+const port =process.env.PORT
+
+app.use(cors());
+app.use(express.json());
+
+
+// const client = new MongoClient(uri, {
+//   serverApi: {
+//     version: ServerApiVersion.v1,
+//     strict: true,
+//     deprecationErrors: true,
+//   }
+// });
+
+
+// // db.movies.aggregate([
+// //    { $limit : 5 }
+// // ])
+
+// async function run() {
+//   try {
+//     // Connect the client to the server	(optional starting in v4.7)
+//   await client.connect();
+
+//    const db = client.db('ideaVault'); 
+//     const trendingCollection = db.collection("trendingIdea");
+
+//     //trending data get
+//     app.get('/trendingIdea',async(req,res)=>{
+//         // const trending =await trendingData.aggregate([{$limit:6}]).toArray()
+//         const trending = await trendingCollection.find().limit(6).toArray()
+
+//         res.json(trending)
+//     })
+
+
+
+  
+//     // Send a ping to confirm a successful connection
+//     await client.db("admin").command({ ping: 1 });
+//     console.log("Pinged your deployment. You successfully connected to MongoDB!");
+//   } finally {
+//     // Ensures that the client will close when you finish/error
+//     // await client.close();
+//   }
+// }
+// run().catch(console.dir);
+
+
+
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
