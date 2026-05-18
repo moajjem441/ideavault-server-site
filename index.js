@@ -30,13 +30,13 @@ async function run() {
    const db = client.db('ideaVault'); 
     const trendingCollection = db.collection("trendingIdea");
 
-//     //trending data get
-//     app.get('/trendingIdea',async(req,res)=>{
-//         // const trending =await trendingData.aggregate([{$limit:6}]).toArray()
-//         const trending = await trendingCollection.find().limit(6).toArray()
+    //trending data get
+    app.get('/trendingIdea',async(req,res)=>{
+        // const trending =await trendingData.aggregate([{$limit:6}]).toArray()
+        const trending = await trendingCollection.find().limit(6).toArray()
 
-//         res.json(trending)
-//     })
+        res.json(trending)
+    })
 
 
 
