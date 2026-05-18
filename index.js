@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors');
 const dotenv = require("dotenv")
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 dotenv.config()
 const uri =process.env.MONGO_URL;
 
@@ -36,6 +36,13 @@ async function run() {
         const trending = await trendingCollection.find().limit(6).toArray()
 
         res.json(trending)
+    })
+
+    //trending data details
+    app.get('/trendingIdea/:id',async(req,res)=>{
+        const {id}=req.params
+        const trendingDeatils= await trendingCollection.findOne({_id: new ObjectId(id)})
+        res.json(trendingDeatils)
     })
 
 
