@@ -27,8 +27,8 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
   await client.connect();
 
-//    const db = client.db('ideaVault'); 
-//     const trendingCollection = db.collection("trendingIdea");
+   const db = client.db('ideaVault'); 
+    const trendingCollection = db.collection("trendingIdea");
 
 //     //trending data get
 //     app.get('/trendingIdea',async(req,res)=>{
