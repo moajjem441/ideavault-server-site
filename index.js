@@ -46,6 +46,13 @@ async function run() {
     })
 
 
+    //all ideas api
+    app.get('/ideas',async(req,res)=>{
+      const ideasData = await trendingCollection.find().toArray();
+      res.json(ideasData)
+    })
+
+
 
   
     // Send a ping to confirm a successful connection
