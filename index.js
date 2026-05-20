@@ -60,6 +60,15 @@ async function run() {
     })
 
 
+    //my idea 
+    app.get('/my-ideas/:email',async(req,res)=>{
+       const {email}=req.params
+
+       const myIdeas= await trendingCollection.find({email: email}).toArray()
+       res.json(myIdeas)
+    })
+
+
 
   
     // Send a ping to confirm a successful connection
