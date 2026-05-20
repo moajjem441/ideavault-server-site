@@ -52,6 +52,13 @@ async function run() {
       res.json(ideasData)
     })
 
+    //add idea
+    app.post('/trendingIdea',async(req,res)=>{
+      const addedData=req.body
+      const result = await trendingCollection.insertOne(addedData)
+      res.json(result)
+    })
+
 
 
   
