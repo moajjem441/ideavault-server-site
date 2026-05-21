@@ -94,6 +94,16 @@ async function run() {
     })
 
 
+    //my idea delete
+
+ app.delete('/my-ideas/:email/:id',async(req,res)=>{
+  const {email,id}=req.params
+
+  const deleteIdea= await trendingCollection.deleteOne({email:email,_id:new ObjectId(id)})
+  req.json(deleteIdea)
+ })
+
+
 
   
     // Send a ping to confirm a successful connection
