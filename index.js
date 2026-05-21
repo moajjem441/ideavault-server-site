@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors');
 const dotenv = require("dotenv")
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { createRemoteJWKSet, jwtVerify } = require('jose-cjs');
 dotenv.config()
 const uri =process.env.MONGO_URL;
 
@@ -21,6 +22,42 @@ const client = new MongoClient(uri, {
 });
 
 
+//---varify token by middleware--------
+
+// const JWKS = createRemoteJWKSet(
+//   new URL("http://localhost:3000/api/auth/jwks")
+// )
+
+
+// const verifyToken =async (req,res,next)=>{
+//   const authHeader=req?.headers.authorization
+//   if(!authHeader){
+//     return res.status(401).json({message:"Unauthorized"})
+//   }
+//   const token = authHeader.split(" ")[1]
+
+//   if(!token){
+//     return res.status(401).json({message:"Unauthorized"})
+//   }
+//   console.log(token)
+
+
+
+//   try{
+//     const {payload}=await jwtVerify(token,JWKS)
+
+//   console.log(payload)
+
+//    next()
+//   }catch(error){
+//     return res.status(403).json({message:
+//       "Forbidden"
+//     });
+//   }
+ 
+// }
+
+
 
 async function run() {
   try {
@@ -29,8 +66,10 @@ async function run() {
 
    const db = client.db('ideaVault'); 
     const trendingCollection = db.collection("trendingIdea");
+    // const commentCollection =db.collection("comments");
 
     //trending data get
+    // verifyToken,
     app.get('/trendingIdea',async(req,res)=>{
         // const trending =await trendingData.aggregate([{$limit:6}]).toArray()
         const trending = await trendingCollection.find().limit(6).toArray()
@@ -100,7 +139,7 @@ async function run() {
   const {email,id}=req.params
 
   const deleteIdea= await trendingCollection.deleteOne({email:email,_id:new ObjectId(id)})
-  req.json(deleteIdea)
+  res.json(deleteIdea)
  })
 
 
