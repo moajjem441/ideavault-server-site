@@ -70,6 +70,31 @@ async function run() {
 
 
 
+  //my idea data
+
+    app.get('/my-ideas/:email/:id',async(req,res)=>{
+      const {email,id}=req.params
+      // const updateData = body
+
+      const myideasdetails= await trendingCollection.findOne({email:email,_id:new ObjectId(id)})
+      res.json(myideasdetails)
+    })
+
+
+
+
+    //my idea details
+
+    app.patch('/my-ideas/:email/:id',async(req,res)=>{
+      const {email,id}=req.params
+      const updateData = req.body
+
+      const myideasdetails= await trendingCollection.updateOne({email:email,_id:new ObjectId(id)},{$set:updateData})
+      res.json(myideasdetails)
+    })
+
+
+
   
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
