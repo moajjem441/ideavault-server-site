@@ -66,7 +66,60 @@ async function run() {
 
    const db = client.db('ideaVault'); 
     const trendingCollection = db.collection("trendingIdea");
-    // const commentCollection =db.collection("comments");
+    const commentCollection =db.collection("comments");
+
+    app.get('/all-comments',async(req,res)=>{
+      const allComments= await commentCollection.find().toArray()
+      res.json(allComments)
+    })
+
+
+
+
+     //--------<>Search<>---------
+
+app.get('/ideas', async (req, res) => {
+
+  const {search,start,end}=req.query;
+
+  let query = {};
+
+  if (search) {
+    query.$or=[
+      {
+      title: {
+        $regex: search,
+        $options: 'i',
+      },
+    },
+    { 
+    category:{
+        $regex: search,
+        $options:'i',
+      },
+     
+    },
+    ] ;
+  }
+
+  if(start || end){
+    query.createdAt = {}
+    if(start) query.createdAt.$gte = new Date(start);
+    if(end) query.createdAt.$lte= new Date(end);
+  }
+
+  // console.log(query);
+
+  const result = await trendingCollection.find(query).toArray();
+
+  res.send(result);
+});
+
+
+
+
+
+
 
     //trending data get
     // verifyToken,
@@ -141,6 +194,16 @@ async function run() {
   const deleteIdea= await trendingCollection.deleteOne({email:email,_id:new ObjectId(id)})
   res.json(deleteIdea)
  })
+
+
+
+
+
+
+
+
+
+
 
 
 
