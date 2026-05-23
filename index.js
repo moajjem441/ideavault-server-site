@@ -241,7 +241,7 @@ app.get('/ideas', async (req, res) => {
 
 
  app.patch('/all-comments/:commentId', async (req, res) => {
-  
+
   const { commentId } = req.params;
   const { newComment } = req.body;
   // console.log(newComment)
@@ -258,6 +258,7 @@ app.get('/ideas', async (req, res) => {
 
 
 app.delete('/all-comments/:id',async(req,res)=>{
+  
   const {id}= req.params
   const deleteData= await commentCollection.deleteOne({_id:new ObjectId(id)})
   res.json(deleteData)
