@@ -68,11 +68,10 @@ async function run() {
     const trendingCollection = db.collection("trendingIdea");
     const commentCollection =db.collection("comments");
 
-    app.get('/all-comments',async(req,res)=>{
-      const allComments= await commentCollection.find().toArray()
-      res.json(allComments)
-    })
 
+
+
+ 
 
 
 
@@ -202,8 +201,62 @@ app.get('/ideas', async (req, res) => {
 
 
 
+//----------------------<>Comments<>--------------
+   app.get('/all-comments',async(req,res)=>{
+    //  const {ideaId}=req.params
+      const allComments= await commentCollection.find().toArray()
+      res.json(allComments)
+    })
+
+    
 
 
+
+    app.get('/all-comments/:ideaId',async(req,res)=>{
+     const {ideaId}=req.params
+      const allComments= await commentCollection.find({ideaId}).toArray()
+      res.json(allComments)
+    })
+
+
+//     app.get('/all-comments/:id',async(req,res)=>{
+//   const {id}= req.params
+//   console.log("received id",id)
+//   const commentData= await commentCollection.findOne({_id: new ObjectId(id)})
+//   res.json(commentData)
+// })
+
+
+
+    app.post('/add-comment',async(req,res)=>{
+      const commentedData = req.body
+      console.log("commented Data",commentedData)
+      const comment= await commentCollection.insertOne(commentedData)
+      res.json(comment)
+    })
+
+
+ app.patch('/all-comments/:commentId', async (req, res) => {
+  const { commentId } = req.params;
+  const { newComment } = req.body;
+  // console.log(newComment)
+
+  const result = await commentCollection.updateOne(
+    { _id: new ObjectId(commentId) }, 
+    { $set: { commentText: newComment } } 
+  );
+
+  res.json({ success: true });
+});
+
+
+
+
+app.delete('/all-comments/:id',async(req,res)=>{
+  const {id}= req.params
+  const deleteData= await commentCollection.deleteOne({_id:new ObjectId(id)})
+  res.json(deleteData)
+})
 
 
 
