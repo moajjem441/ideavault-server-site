@@ -25,7 +25,7 @@ const client = new MongoClient(uri, {
 //---varify token by middleware--------
 
 const JWKS = createRemoteJWKSet(
-  new URL("http://localhost:3000/api/auth/jwks")
+  new URL(`${process.env.CLIENT_URL}/api/auth/jwks`)
 )
 
 
@@ -234,16 +234,15 @@ app.get('/ideas', async (req, res) => {
 
 
 
-    app.post('/add-comment',async(req,res)=>{
-      const commentedData = req.body
-      console.log("commented Data",commentedData)
-    try{
-        const comment= await commentCollection.insertOne(commentedData)
-    }catch(error){
-      return "No comment come here"
-    }
-      res.json(comment)
-    })
+ app.post('/add-comment', async(req,res)=>{
+  const commentedData = req.body
+  try{
+    const comment = await commentCollection.insertOne(commentedData)
+    res.json(comment) 
+  } catch(error){
+    res.status(500).json({error: "Comment insert failed"})  
+  }
+})
 
 
 
