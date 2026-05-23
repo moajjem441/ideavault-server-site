@@ -231,7 +231,11 @@ app.get('/ideas', async (req, res) => {
     app.post('/add-comment',async(req,res)=>{
       const commentedData = req.body
       console.log("commented Data",commentedData)
-      const comment= await commentCollection.insertOne(commentedData)
+    try{
+        const comment= await commentCollection.insertOne(commentedData)
+    }catch(error){
+      return "No comment come here"
+    }
       res.json(comment)
     })
 
