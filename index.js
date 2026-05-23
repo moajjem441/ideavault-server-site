@@ -241,6 +241,7 @@ app.get('/ideas', async (req, res) => {
 
 
  app.patch('/all-comments/:commentId', async (req, res) => {
+  
   const { commentId } = req.params;
   const { newComment } = req.body;
   // console.log(newComment)
