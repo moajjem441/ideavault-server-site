@@ -202,8 +202,7 @@ app.get('/ideas', async (req, res) => {
 
 
 //----------------------<>Comments<>--------------
-   app.get('/all-comments',async(req,res)=>
-    
+   app.get('/all-comments',async(req,res)=>{
     //  const {ideaId}=req.params
       const allComments= await commentCollection.find().toArray()
       res.json(allComments)
