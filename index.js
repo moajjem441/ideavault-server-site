@@ -152,7 +152,7 @@ app.get('/ideas', async (req, res) => {
 
 
     //my idea 
-    app.get('/my-ideas/:email',async(req,res)=>{
+    app.get('/my-ideas/:email',verifyToken,async(req,res)=>{
        const {email}=req.params
 
        const myIdeas= await trendingCollection.find({email: email}).toArray()
