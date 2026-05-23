@@ -24,38 +24,38 @@ const client = new MongoClient(uri, {
 
 //---varify token by middleware--------
 
-// const JWKS = createRemoteJWKSet(
-//   new URL("http://localhost:3000/api/auth/jwks")
-// )
+const JWKS = createRemoteJWKSet(
+  new URL("http://localhost:3000/api/auth/jwks")
+)
 
 
-// const verifyToken =async (req,res,next)=>{
-//   const authHeader=req?.headers.authorization
-//   if(!authHeader){
-//     return res.status(401).json({message:"Unauthorized"})
-//   }
-//   const token = authHeader.split(" ")[1]
+const verifyToken =async (req,res,next)=>{
+  const authHeader=req?.headers.authorization
+  if(!authHeader){
+    return res.status(401).json({message:"Unauthorized"})
+  }
+  const token = authHeader.split(" ")[1]
 
-//   if(!token){
-//     return res.status(401).json({message:"Unauthorized"})
-//   }
-//   console.log(token)
+  if(!token){
+    return res.status(401).json({message:"Unauthorized"})
+  }
+  console.log(token)
 
 
 
-//   try{
-//     const {payload}=await jwtVerify(token,JWKS)
+  try{
+    const {payload}=await jwtVerify(token,JWKS)
 
-//   console.log(payload)
+  console.log(payload)
 
-//    next()
-//   }catch(error){
-//     return res.status(403).json({message:
-//       "Forbidden"
-//     });
-//   }
+   next()
+  }catch(error){
+    return res.status(403).json({message:
+      "Forbidden"
+    });
+  }
  
-// }
+}
 
 
 
@@ -144,7 +144,7 @@ app.get('/ideas', async (req, res) => {
     })
 
     //add idea
-    app.post('/trendingIdea',async(req,res)=>{
+    app.post('/trendingIdea',verifyToken,async(req,res)=>{
       const addedData=req.body
       const result = await trendingCollection.insertOne(addedData)
       res.json(result)
@@ -202,11 +202,17 @@ app.get('/ideas', async (req, res) => {
 
 
 //----------------------<>Comments<>--------------
+
+
+
+
    app.get('/all-comments',async(req,res)=>{
     //  const {ideaId}=req.params
       const allComments= await commentCollection.find().toArray()
       res.json(allComments)
     })
+
+    
 
     
 
@@ -240,6 +246,18 @@ app.get('/ideas', async (req, res) => {
     })
 
 
+
+    //for my interection
+  // আপনার সার্ভারের কোড (index.js বা server.js এ)
+// app.get('/all-comments/:userId', async (req, res) => {
+//     const { userId } = req.params; // এখানে ইউজার আইডি রিসিভ হবে
+    
+//     const result = await commentCollection.find({ userId: userId }).toArray();
+//     res.json(result);
+// });
+
+
+
  app.patch('/all-comments/:commentId', async (req, res) => {
 
   const { commentId } = req.params;
@@ -257,12 +275,17 @@ app.get('/ideas', async (req, res) => {
 
 
 
+
+
 app.delete('/all-comments/:id',async(req,res)=>{
   
   const {id}= req.params
   const deleteData= await commentCollection.deleteOne({_id:new ObjectId(id)})
   res.json(deleteData)
 })
+
+
+
 
 
 
